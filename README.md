@@ -14,6 +14,9 @@ count_tsv/<サンプル名>_counts.tsv
 ```Bash
 conda activate qiime2-yyyy.mm
 conda install biopython
+
+git clone https://github.com/Yokohide0317/q2_export_idCountSeqs.git
+cd q2_export_idCountSeqs/
 ```
 
 ## 使い方
