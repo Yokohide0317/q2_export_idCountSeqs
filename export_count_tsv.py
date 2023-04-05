@@ -19,6 +19,7 @@ class ExportMain():
         self.table_path = Path(args.table)
         self.rep_seq_path = Path(args.repseq)
         self.output_path = Path(args.output)
+        self.excel = Path(args.excel)
         return
 
     # Terminalを実行
@@ -37,7 +38,10 @@ class ExportMain():
         _df = _df.copy()
         _df = _df[["ID", _colname, "Seq"]]
         _df = _df.rename({_colname: "count"}, axis=1)
-        _df.to_csv(str(self.output_path/f"{_colname}_counts.tsv"), sep="\t", index=False, header=True)
+        if self.excel:
+            _df.to_csv(str(self.output_path/f"{_colname}_counts.tsv"), sep="\t", index=False, header=True)
+        else:
+            _df.to_excel(str(self.output_path/f"{_colname}_counts.xlsx"), index=False, header=True)
         return
 
 
@@ -106,9 +110,8 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--table")
     parser.add_argument("-r", "--repseq")
     parser.add_argument("-o", "--output", default="./count_tsv")
+    parser.add_argument("--excel", action='store_true', help="export .xlsx file(s) instead of .tsv file")
 
     args = parser.parse_args()
     exportMain = ExportMain(args)
     exportMain.pipeMain()
-
-

@@ -37,4 +37,5 @@ optional arguments:
   -t TABLE, --table TABLE
   -r REPSEQ, --repseq REPSEQ
   -o OUTPUT, --output OUTPUT
+  --excel            export .xlsx file(s) instead of .tsv file
 ```
