@@ -19,7 +19,7 @@ class ExportMain():
         self.table_path = Path(args.table)
         self.rep_seq_path = Path(args.repseq)
         self.output_path = Path(args.output)
-        self.excel = Path(args.excel)
+        self.excel = args.excel
         return
 
     # Terminalを実行
@@ -38,7 +38,7 @@ class ExportMain():
         _df = _df.copy()
         _df = _df[["ID", _colname, "Seq"]]
         _df = _df.rename({_colname: "count"}, axis=1)
-        if self.excel:
+        if not self.excel:
             _df.to_csv(str(self.output_path/f"{_colname}_counts.tsv"), sep="\t", index=False, header=True)
         else:
             _df.to_excel(str(self.output_path/f"{_colname}_counts.xlsx"), index=False, header=True)
