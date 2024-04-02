@@ -42,8 +42,7 @@ class ExportMain():
             _df.to_csv(str(self.output_path/f"{_colname}_counts.tsv"), sep="\t", index=False, header=True)
         else:
             _df.to_excel(str(self.output_path/f"{_colname}_counts.xlsx"), index=False, header=True)
-        return
-
+        return _df
 
     def ready_source_file(self):
 
@@ -97,10 +96,23 @@ class ExportMain():
         self.get_source_df()
 
         for colname in self.sample_names:
-            self.save_count_tsv(self.merged_df, colname)
+            save_df = self.save_count_tsv(self.merged_df, colname)
+            self.to_fasta(save_df, colname)
         logger.info(f"Saved to: {str(self.output_path)}")
 
         shutil.rmtree(self.tmp_path)
+        return
+
+    def to_fasta(self, _df, _colname):
+        _df = _df[_df["count"] > 0]
+        seq_text = []
+
+        for index, row in _df.iterrows():
+            seq_text.append(f"> {row['ID']}\n{row['Seq']}")
+
+        with open(str(self.output_path/f"{_colname}_sequences.fasta"), "w") as f:
+            f.write("\n".join(seq_text))
+
         return
 
 
